@@ -1,72 +1,263 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>iRays Vision – AI-powered Pupillometry</title>
-  <!-- Tailwind via CDN for quick prototyping -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iRays | Prehospital Neuro-Triage</title>
+    <meta name="description" content="Dual-Spectrum Pupillometry for Prehospital Neuro-Triage. Ending the 'Brain Data Desert' for EMTs and Paramedics.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Custom Animations */
+        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans leading-relaxed text-slate-800">
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
 
-  <!-- Header -->
-  <header class="py-6 bg-white shadow">
-    <div class="max-w-5xl mx-auto px-4 flex items-center justify-between">
-      <h1 class="text-2xl font-semibold">iRays Vision</h1>
-      <nav class="space-x-4">
-        <a href="#tech" class="hover:underline">Technology</a>
-        <a href="#team" class="hover:underline">Team</a>
-        <a href="#contact" class="hover:underline">Contact</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
-    <div class="max-w-5xl mx-auto px-4 py-24 text-center">
-      <h2 class="text-4xl font-bold mb-4">Next-gen video pupillometry</h2>
-      <p class="text-xl mb-8">Instant, bedside neural assessment—no bulky equipment.</p>
-      <a href="#contact" class="inline-block bg-white text-indigo-700 font-semibold px-6 py-3 rounded-lg shadow">
-        Request a demo
-      </a>
-    </div>
-  </section>
-
-  <!-- Tech -->
-  <section id="tech" class="max-w-5xl mx-auto px-4 py-16">
-    <h3 class="text-3xl font-semibold mb-4">How it works</h3>
-    <p class="mb-6">Our IR camera and edge-AI firmware measure constriction latency and dilation
-       velocity with sub-millisecond precision …</p>
-  </section>
-
-  <!-- Team -->
-  <section id="team" class="bg-gray-100 py-16">
-    <div class="max-w-5xl mx-auto px-4">
-      <h3 class="text-3xl font-semibold mb-8">Meet the founders</h3>
-      <div class="grid sm:grid-cols-2 gap-8">
-        <div class="bg-white p-6 rounded-lg shadow">
-          <h4 class="text-xl font-medium mb-2">Ran Yang</h4>
-          <p class="text-sm">PhD, Applied Physics – 20 yrs electronics edge AI research in medical devices.</p>
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">i</div>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">iRays<span class="text-blue-600">Vision</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#problem" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">The Problem</a>
+                    <a href="#technology" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">Technology</a>
+                    <a href="#partners" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition">Validation</a>
+                    <a href="mailto:ran@iraysvision.com" class="px-5 py-2.5 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition shadow-lg shadow-slate-900/20">
+                        Contact
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="bg-white p-6 rounded-lg shadow">
-          <h4 class="text-xl font-medium mb-2">Gunter Luepke</h4>
-          <p class="text-sm">phD, 40 years lasers and optics research</p>
+    </nav>
+
+    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden hero-gradient">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center px-4 py-2 rounded-full glass-panel border border-blue-500/30 text-blue-200 text-sm font-medium mb-8 fade-in-up">
+                <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                Piloting with Hampton Fire & Rescue
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold text-white tracking-tight mb-8 leading-tight fade-in-up delay-100">
+                Stop Guessing. <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Start Saving Brains.</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto font-light leading-relaxed fade-in-up delay-200">
+                Dual-spectrum pupillometry for prehospital neuro-triage. <br class="hidden md:block"/>
+                Objective data for stroke and trauma, right in the ambulance.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4 fade-in-up delay-300">
+                <a href="#technology" class="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-500 transition shadow-xl shadow-blue-900/20 flex items-center justify-center gap-2">
+                    View the Technology
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                </a>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </header>
 
-  <!-- Contact -->
-  <section id="contact" class="max-w-5xl mx-auto px-4 py-16 text-center">
-    <h3 class="text-3xl font-semibold mb-6">Get in touch</h3>
-    <p>Email us at
-       <a class="text-indigo-600 underline" href="mailto:ran@iraysvision.com">ran@iraysvision.com</a></p>
-  </section>
+    <section id="problem" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">The "Brain Data Desert"</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Medics have tools for every major organ system, except the most critical one.
+                </p>
+            </div>
 
-  <footer class="py-6 text-center text-sm text-gray-500">
-    © <span id="year"></span> iRays Vision. All rights reserved.
-    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-  </footer>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-slate-900">Heart</h3>
+                        <span class="text-green-600 bg-green-100 px-3 py-1 rounded-full text-xs font-bold">SOLVED</span>
+                    </div>
+                    <div class="h-24 bg-white rounded-xl border border-slate-200 flex items-center justify-center mb-4">
+                         <svg class="w-32 h-12 text-green-500" viewBox="0 0 100 30" fill="none" stroke="currentColor" stroke-width="2">
+                             <path d="M0 15 L10 15 L15 5 L20 25 L25 15 L35 15 L40 5 L45 25 L50 15 L100 15" />
+                         </svg>
+                    </div>
+                    <p class="text-gray-900 font-semibold">ECG</p>
+                    <p class="text-sm text-gray-500 mt-2">Objective, electrical data.</p>
+                </div>
+
+                <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-slate-900">Lungs</h3>
+                        <span class="text-green-600 bg-green-100 px-3 py-1 rounded-full text-xs font-bold">SOLVED</span>
+                    </div>
+                    <div class="h-24 bg-white rounded-xl border border-slate-200 flex items-center justify-center mb-4">
+                        <svg class="w-32 h-12 text-blue-500" viewBox="0 0 100 30" fill="none" stroke="currentColor" stroke-width="2">
+                             <path d="M0 25 L10 25 L15 5 L85 5 L90 25 L100 25" />
+                        </svg>
+                    </div>
+                    <p class="text-gray-900 font-semibold">Capnography</p>
+                    <p class="text-sm text-gray-500 mt-2">Objective, gas exchange data.</p>
+                </div>
+
+                <div class="p-8 rounded-2xl bg-white border-2 border-red-100 shadow-xl shadow-red-100/50 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl">UNSOLVED</div>
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-slate-900">Brain</h3>
+                    </div>
+                    <div class="h-24 bg-slate-100 rounded-xl border border-slate-200 flex items-center justify-center mb-4 relative">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <p class="text-red-600 font-bold">The Flashlight</p>
+                    <p class="text-sm text-gray-500 mt-2">Subjective. Inconsistent. <br/>"Looks okay" isn't a diagnosis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="technology" class="py-24 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <div class="inline-block px-3 py-1 bg-blue-900/50 text-blue-400 rounded-full text-xs font-bold tracking-wide mb-6">
+                        PATENT PENDING
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 leading-tight">
+                        Event Synchronized <br/> <span class="text-blue-500">Video Topology.</span>
+                    </h2>
+                    <p class="text-slate-400 text-lg mb-6 leading-relaxed">
+                        Standard cameras miss the critical millisecond reactions of the pupil. Our proprietary dual-spectrum sensor captures the <strong>Velocity</strong> and <strong>Latency</strong> of the pupillary light reflex.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-green-500 mr-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <div>
+                                <strong class="text-white">Dual-Spectrum:</strong> IR for depth, Visible for stimulation.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-green-500 mr-3 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <div>
+                                <strong class="text-white">Ruggedized Edge AI:</strong> No cloud required. Instant analysis on the device, even in a moving ambulance.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-blue-600 blur-3xl opacity-20 rounded-full"></div>
+                    <div class="relative bg-slate-800 rounded-2xl p-8 border border-slate-700 shadow-2xl">
+                        <div class="flex justify-center items-center h-64 bg-black rounded-xl border border-slate-600 relative overflow-hidden">
+                             <div class="absolute w-32 h-32 rounded-full border-2 border-blue-500/50 flex items-center justify-center">
+                                 <div class="w-12 h-12 bg-black rounded-full border border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.5)]"></div>
+                             </div>
+                             <div class="absolute top-0 w-full h-1 bg-green-500/50 shadow-[0_0_10px_#22c55e] animate-[scan_2s_ease-in-out_infinite]"></div>
+                        </div>
+                        <div class="mt-6 flex justify-between text-xs font-mono text-blue-400">
+                            <span>LATENCY: 180ms</span>
+                            <span>CONSTRICTION: 3.2mm/s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="partners" class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-sm font-bold text-gray-400 tracking-widest uppercase mb-12">Supported By & Partnering With</h2>
+            <div class="flex flex-wrap justify-center gap-12 md:gap-24 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                <div class="text-xl font-bold text-slate-800">WILLIAM & MARY</div>
+                <div class="text-xl font-bold text-slate-800">HAMPTON FIRE & RESCUE</div>
+                <div class="text-xl font-bold text-slate-800">VIPC</div>
+                <div class="text-xl font-bold text-slate-800">Mid-South REACH</div>
+            </div>
+            
+            <div class="mt-16 inline-block bg-white px-8 py-4 rounded-xl border border-gray-200 shadow-sm">
+                <p class="text-slate-600 font-medium">
+                    <span class="text-green-600 font-bold">✔ IRB Exempt Status Granted</span> for Clinical Data Collection
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white border-t border-gray-100">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900">Leadership</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-2xl font-bold mb-4">RY</div>
+                    <h3 class="text-xl font-bold text-slate-900">Ran Yang, Ph.D.</h3>
+                    <p class="text-blue-600 font-medium mb-3">Founder</p>
+                    <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
+                        20 years in Applied Physics and Electronics. <br/>
+                        Former Lead Researcher at W&M. <br/>
+                        Expert in Edge AI & Optical Sensing.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 text-2xl font-bold mb-4">GL</div>
+                    <h3 class="text-xl font-bold text-slate-900">Dr. Gunter Luepke</h3>
+                    <p class="text-slate-500 font-medium mb-3">Scientific Advisor</p>
+                    <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
+                        40 years in Lasers and Optics Research. <br/>
+                        Professor of Applied Physics. <br/>
+                        Leading authority on ultrafast spectroscopy.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-bold text-xl text-white">iRays<span class="text-blue-500">Vision</span></span>
+                <p class="text-sm mt-2">© 2026 iRays Inc. All rights reserved.</p>
+            </div>
+            <div class="flex gap-6">
+                <a href="mailto:ran@iraysvision.com" class="hover:text-white transition">Contact Us</a>
+                <span class="text-slate-700">|</span>
+                <span class="text-sm">Based in Williamsburg, VA</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
