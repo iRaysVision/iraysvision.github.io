@@ -3,264 +3,488 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iRays Vision | Prehospital Neuro-Triage & Pupillometry</title>
-    <meta name="description" content="Dual-Spectrum Pupillometry for Prehospital Neuro-Triage. Ending the 'Brain Data Desert' for EMTs and Paramedics.">
+    <title>iRays Vision | Objective Brain Triage for the Field</title>
+    <meta name="description" content="iRays Vision is developing the first handheld device to bring objective neurological assessment to prehospital medicine.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Newsreader', 'Georgia', 'serif'],
+                        body: ['Outfit', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        ink: { 950: '#060a14', 900: '#0a0f1e', 800: '#111933', 700: '#192347' },
+                        signal: { 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb' },
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        .hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+        *, *::before, *::after { box-sizing: border-box; }
+        body { font-family: 'Outfit', system-ui, sans-serif; overflow-x: hidden; }
+
+        /* ===== SCROLL-TRIGGERED REVEALS ===== */
+        .sr { opacity: 0; transform: translateY(32px); transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
+        .sr.visible { opacity: 1; transform: translateY(0); }
+        .sr-d1 { transition-delay: 0.07s; }
+        .sr-d2 { transition-delay: 0.14s; }
+        .sr-d3 { transition-delay: 0.22s; }
+        .sr-d4 { transition-delay: 0.30s; }
+
+        /* Hero entrance — immediate, not scroll-triggered */
+        .hero-reveal { opacity: 0; transform: translateY(24px); animation: heroIn 0.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+        .hd1 { animation-delay: 0.05s; }
+        .hd2 { animation-delay: 0.15s; }
+        .hd3 { animation-delay: 0.28s; }
+        .hd4 { animation-delay: 0.38s; }
+        @keyframes heroIn { to { opacity:1; transform:translateY(0); } }
+
+        /* ===== HERO ATMOSPHERE ===== */
+        .hero-bg {
+            background: 
+                radial-gradient(ellipse 50% 45% at 65% 45%, rgba(59,130,246,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 80% 60% at 40% 50%, #111933 0%, #060a14 100%);
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        /* Horizon line glow */
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 10%; right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59,130,246,0.15), transparent);
+        }
+
+        /* ===== DEVICE IMAGE STAGING ===== */
+        .device-stage { position: relative; }
+        .device-stage::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 130%; height: 130%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .device-stage::after {
+            content: '';
+            position: absolute;
+            bottom: -24px; left: 15%; right: 15%;
+            height: 48px;
+            background: radial-gradient(ellipse, rgba(0,0,0,0.25) 0%, transparent 70%);
+            filter: blur(12px);
+            pointer-events: none;
+        }
+
+        /* ===== NAV ===== */
+        .nav-glass {
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(20px) saturate(1.2);
+            -webkit-backdrop-filter: blur(20px) saturate(1.2);
+        }
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: ''; position: absolute;
+            bottom: -3px; left: 0;
+            width: 0; height: 1.5px;
+            background: #2563eb;
+            transition: width 0.35s cubic-bezier(0.22,1,0.36,1);
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* ===== TRUST LOGOS — individual visual weight balancing ===== */
+        .trust-bar-logo {
+            filter: grayscale(100%) brightness(0) opacity(0.35);
+            transition: all 0.4s ease;
+            /* Each logo gets overridden with specific dimensions below */
+        }
+        .trust-bar-logo:hover {
+            filter: grayscale(0%) brightness(1) opacity(0.85);
+        }
+        /*
+         * Tune each logo individually so they have equal VISUAL WEIGHT,
+         * not equal dimensions. Tall crests need less height than wide wordmarks.
+         * Adjust these values once you have the actual SVG files.
+         */
+        .logo-wm       { height: 36px; } /* W&M cipher — tallish, moderate width */
+        .logo-hampton   { height: 40px; } /* Fire dept badge — often tall/square */
+        .logo-nih       { height: 30px; } /* NIH wordmark — wide, shorter */
+        @media (min-width: 768px) {
+            .logo-wm     { height: 42px; }
+            .logo-hampton { height: 46px; }
+            .logo-nih     { height: 34px; }
+        }
+
+        /* ===== SECTION TRANSITIONS ===== */
+        .section-divide {
+            position: relative;
+        }
+        .section-divide::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 64px; height: 1px;
+            background: linear-gradient(90deg, transparent, #d1d5db, transparent);
+        }
+
+        /* ===== CARDS ===== */
+        .card-elevated {
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
+        }
+        .card-elevated:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px -8px rgba(0,0,0,0.08);
+        }
+
+        /* ===== QUOTE ===== */
+        .quote-mark {
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: 6rem;
+            line-height: 1;
+            color: rgba(59,130,246,0.08);
+            position: absolute;
+            top: -16px; left: 50%;
+            transform: translateX(-50%);
+            user-select: none;
+            pointer-events: none;
+        }
+
+        /* ===== CTA GLOW ===== */
+        .cta-bg {
+            background: 
+                radial-gradient(ellipse 40% 60% at 50% 100%, rgba(59,130,246,0.06) 0%, transparent 70%),
+                #060a14;
+        }
+
+        /* ===== BUTTON HOVER ===== */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(59,130,246,0.08), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .btn-primary:hover::before { opacity: 1; }
+        .btn-primary:hover { box-shadow: 0 8px 30px -4px rgba(59,130,246,0.2); }
+
+        .btn-ghost {
+            transition: all 0.3s ease;
+        }
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.25);
+        }
+
+        /* ===== SCROLL OFFSET ===== */
+        section[id] { scroll-margin-top: 80px; }
+
+        /* ===== SMOOTH SCROLLBAR ===== */
+        html { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased">
+<body class="bg-white text-slate-900 antialiased font-body">
 
-    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">i</div>
-                    <span class="font-bold text-xl tracking-tight text-slate-900">iRays<span class="text-blue-600">Vision</span></span>
+    <!-- ======================== NAV ======================== -->
+    <nav class="fixed w-full z-50 nav-glass border-b border-gray-100/60">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="flex justify-between items-center h-[72px]">
+                <a href="#" class="flex items-center gap-2.5 group">
+                    <div class="w-8 h-8 rounded-md bg-ink-900 flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                        <span class="text-white font-semibold text-base leading-none">i</span>
+                    </div>
+                    <span class="font-semibold text-lg tracking-tight text-slate-900">iRays<span class="text-signal-600">Vision</span></span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#about" class="nav-link text-[13px] font-medium text-gray-400 hover:text-slate-800 transition-colors">About</a>
+                    <a href="#team" class="nav-link text-[13px] font-medium text-gray-400 hover:text-slate-800 transition-colors">Team</a>
+                    <a href="/cdn-cgi/l/email-protection#5a283b341a33283b23292c33293335347439353765292f38303f392e6713342b2f332823" class="ml-3 px-5 py-2 rounded-full bg-ink-900 text-white text-[13px] font-medium hover:bg-ink-800 transition shadow-md shadow-ink-900/15 hover:shadow-lg hover:shadow-ink-900/25">Get in Touch</a>
                 </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#problem" class="text-sm font-medium text-gray-600 hover:text-blue-600">Problem</a>
-                    <a href="#technology" class="text-sm font-medium text-gray-600 hover:text-blue-600">Technology</a>
-                    <a href="#team" class="text-sm font-medium text-gray-600 hover:text-blue-600">Team</a>
-                    <a href="mailto:ran@iraysvision.com" class="px-5 py-2.5 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition shadow-lg shadow-slate-900/20">Inquire / Partner</a>
-                </div>
+                <button onclick="document.getElementById('mob').classList.toggle('hidden')" class="md:hidden p-2 rounded-lg hover:bg-gray-50 transition">
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+            <div id="mob" class="hidden md:hidden pb-5 space-y-2">
+                <a href="#about" class="block text-sm text-gray-500 py-2.5 hover:text-slate-800 transition">About</a>
+                <a href="#team" class="block text-sm text-gray-500 py-2.5 hover:text-slate-800 transition">Team</a>
+                <a href="/cdn-cgi/l/email-protection#abd9cac5ebc2d9cad2d8ddc2d8c2c4c585c8c4c6" class="block text-center py-3 rounded-xl bg-ink-900 text-white text-sm font-medium mt-2">Get in Touch</a>
             </div>
         </div>
     </nav>
 
-<header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden hero-gradient">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center text-center lg:text-left">
-                <div class="fade-in-up">
-                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-200 text-sm font-medium mb-8">
-                        <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                        Piloting with Hampton Fire & Rescue
+    <!-- ======================== HERO ======================== -->
+    <header class="relative pt-28 pb-20 lg:pt-44 lg:pb-36 overflow-hidden hero-bg">
+        <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-16 items-center text-center lg:text-left">
+                
+                <!-- Copy -->
+                <div>
+                    <div class="hero-reveal hd1 inline-flex items-center px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-slate-400 text-xs font-medium tracking-wide mb-10">
+                        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-2.5 animate-pulse"></span>
+                        Piloting with Hampton Fire &amp; Rescue
                     </div>
-                    <h1 class="text-5xl md:text-6xl font-bold text-white tracking-tight mb-8 leading-tight">
-                        Stop Guessing. <br/>
-                        <span class="text-blue-400">Start Saving Brains.</span>
+                    <h1 class="hero-reveal hd2 font-display text-[2.75rem] md:text-[3.5rem] lg:text-[4rem] text-white tracking-tight leading-[1.08] mb-7">
+                        Objective Brain Triage<br><em class="text-signal-400 font-light">for the Field</em>
                     </h1>
-                    <p class="text-xl text-slate-300 mb-12 max-w-2xl font-light leading-relaxed">
-                        The first handheld, dual-spectrum pupillometer designed for the field. Objective neuro-vital signs in under 10 seconds.
+                    <p class="hero-reveal hd3 text-[17px] text-slate-400 mb-11 max-w-[420px] font-light leading-[1.7] mx-auto lg:mx-0">
+                        The first handheld device designed to replace the subjective penlight exam with a quantitative brain vital sign — in seconds.
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <a href="#technology" class="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-500 transition shadow-xl shadow-blue-900/20">View the Technology</a>
-                        <a href="#problem" class="px-8 py-4 bg-white/10 text-white border border-white/20 rounded-xl font-semibold hover:bg-white/20 transition">Market Opportunity</a>
+                    <div class="hero-reveal hd4 flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start">
+                        <a href="/cdn-cgi/l/email-protection#77051619371e05160e04011e041e18195914181a480402151d1214034a27160503191205041f1e07573e1906021e050e" class="btn-primary px-7 py-3.5 bg-white text-ink-900 rounded-lg font-medium text-sm shadow-lg shadow-black/10 inline-flex items-center justify-center gap-2">
+                            Partner With Us
+                            <svg class="w-3.5 h-3.5 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </a>
+                        <a href="/cdn-cgi/l/email-protection#7e0c1f103e170c1f070d08170d171110501d1113410d0b1c141b1d0a433710081b0d0a110c5e37100f0b170c07" class="btn-ghost px-7 py-3.5 text-white border border-white/[0.12] rounded-lg font-medium text-sm">Investor Inquiries</a>
                     </div>
                 </div>
-                
-                <div class="relative fade-in-up delay-100 flex justify-center">
-                    <div class="absolute inset-0 bg-blue-500 blur-3xl opacity-20 rounded-full"></div>
-                    
-                    <img src="assets/img/nano-banana.jpg" alt="iRays Handheld Device Vision" class="relative rounded-3xl w-full max-w-lg transform hover:scale-105 transition duration-500 shadow-2xl border border-white/5">
-                    
-                    <div class="absolute -bottom-6 md:bottom-8 -right-4 md:-right-8 bg-white/10 backdrop-blur-lg p-5 rounded-2xl border border-white/20 shadow-2xl hidden md:block z-10">
-                        <div class="flex items-center gap-3">
-                            <div class="w-2 h-10 bg-blue-500 rounded-full"></div>
-                            <div>
-                                <p class="text-blue-400 font-mono text-[10px] uppercase tracking-[0.3em] font-bold mb-0.5">Industrial Design</p>
-                                <p class="text-white font-bold text-base tracking-tight">Product Vision V5</p>
-                                <p class="text-slate-400 text-[9px] uppercase tracking-widest mt-1">Production Intent Enclosure</p>
-                            </div>
-                        </div>
+
+                <!-- Device Image -->
+                <div class="hero-reveal hd3 flex justify-center lg:justify-end">
+                    <div class="device-stage">
+                        <img 
+                            src="assets/img/nano-banana.jpg" 
+                            alt="iRays Vision Device" 
+                            class="relative rounded-2xl w-full max-w-[380px] shadow-2xl shadow-black/50 border border-white/[0.06] hover:scale-[1.02] transition-transform duration-700 ease-out"
+                        >
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="bg-blue-700 py-8 border-b border-blue-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
-                <div>
-                    <div class="text-2xl font-bold">ACTIVE</div>
-                    <div class="text-blue-200 text-xs uppercase tracking-widest">Hampton Pilot</div>
+    <!-- ======================== TRUST BAR ======================== -->
+    <section class="py-8 md:py-10 bg-gray-50/70 border-b border-gray-100/80">
+        <div class="max-w-3xl mx-auto px-5 sm:px-8">
+            <!--
+                LOGO SIZING GUIDE:
+                Each logo class controls that specific logo's visual weight.
+                After dropping in your actual SVGs, adjust .logo-wm / .logo-hampton / .logo-nih
+                heights in the <style> block so they appear optically balanced —
+                a tall crest needs less height than a wide horizontal wordmark.
+            -->
+            <div class="flex items-center justify-center gap-12 md:gap-16">
+                <img src="assets/img/wm-logo.svg"        alt="William & Mary"            class="trust-bar-logo logo-wm">
+                <img src="assets/img/hampton-fr-logo.svg" alt="Hampton Fire & Rescue"     class="trust-bar-logo logo-hampton">
+                <img src="assets/img/nih-logo.svg"        alt="National Institutes of Health" class="trust-bar-logo logo-nih">
+            </div>
+            <p class="text-center text-[11px] text-gray-400 mt-5 tracking-wide">
+                Supported by the 
+                <a href="https://sites.google.com/view/wm-ai4health" target="_blank" rel="noopener" class="text-gray-500 hover:text-signal-600 underline underline-offset-2 decoration-gray-300 hover:decoration-signal-600 transition-colors">W&M AI4Health Initiative</a> 
+                and the 
+                <a href="https://www.wm.edu/offices/entrepreneurship/" target="_blank" rel="noopener" class="text-gray-500 hover:text-signal-600 underline underline-offset-2 decoration-gray-300 hover:decoration-signal-600 transition-colors">W&M Entrepreneurship Hub</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- ======================== THE GAP ======================== -->
+    <section id="about" class="py-24 lg:py-32 bg-white">
+        <div class="max-w-5xl mx-auto px-5 sm:px-8">
+            <div class="max-w-2xl mx-auto text-center mb-16 sr">
+                <h2 class="font-display text-[2rem] md:text-[2.75rem] text-slate-900 tracking-tight leading-[1.15] mb-6">
+                    EMS has real-time data for every critical organ — <em class="text-signal-600">except the brain.</em>
+                </h2>
+                <p class="text-gray-400 text-[15px] leading-[1.75]">
+                    For cardiac emergencies there's the ECG. For respiratory distress, capnography. For neurological events — stroke, TBI, overdose — providers still rely on a penlight and a subjective guess.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+                <div class="sr sr-d1 card-elevated p-8 rounded-2xl bg-gray-50/80 border border-gray-100">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center mb-5">
+                        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                    </div>
+                    <p class="text-[15px] font-semibold text-slate-800 mb-1">Heart</p>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">ECG — Objective, real-time electrical monitoring.</p>
+                    <span class="text-[9px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-[0.12em]">Standard of Care</span>
                 </div>
-                <div>
-                    <div class="text-2xl font-bold">EXEMPT</div>
-                    <div class="text-blue-200 text-xs uppercase tracking-widest">IRB Status</div>
+
+                <div class="sr sr-d2 card-elevated p-8 rounded-2xl bg-gray-50/80 border border-gray-100">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center mb-5">
+                        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <p class="text-[15px] font-semibold text-slate-800 mb-1">Lungs</p>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">Capnography — Real-time respiratory gas exchange data.</p>
+                    <span class="text-[9px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase tracking-[0.12em]">Standard of Care</span>
                 </div>
-                <div>
-                    <div class="text-2xl font-bold">PENDING</div>
-                    <div class="text-blue-200 text-xs uppercase tracking-widest">US Patent</div>
-                </div>
-                <div>
-                    <div class="text-2xl font-bold">CLASS II</div>
-                    <div class="text-blue-200 text-xs uppercase tracking-widest">FDA Pathway</div>
+
+                <div class="sr sr-d3 card-elevated p-8 rounded-2xl bg-red-50/40 border-2 border-red-200/50 relative">
+                    <div class="absolute -top-2.5 right-5 bg-red-600 text-white text-[9px] font-semibold px-3 py-0.5 rounded-full tracking-wide shadow-sm">GAP</div>
+                    <div class="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center mb-5">
+                        <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <p class="text-[15px] font-semibold text-slate-800 mb-1">Brain</p>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4">Penlight — Subjective, inconsistent, unreliable.</p>
+                    <span class="text-[9px] font-semibold text-red-700 bg-red-100/80 px-2.5 py-1 rounded-full uppercase tracking-[0.12em]">No Objective Tool Exists</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-16 bg-white border-b border-gray-100">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <svg class="w-10 h-10 text-blue-100 mx-auto mb-6" fill="currentColor" viewBox="0 0 32 32"><path d="M10 8v8H6v2h4v2H4v-4h4V8h2zm12 0v8h-4v2h4v2h-6v-4h4V8h2z"/></svg>
-            <blockquote class="text-xl md:text-2xl font-medium text-slate-800 italic leading-relaxed">
-                "One of the best protocols they've seen since assisting William & Mary... very well filled out."
-            </blockquote>
-            <div class="mt-6">
-                <p class="font-bold text-slate-900">Office of Sponsored Programs</p>
-                <p class="text-sm text-gray-500 uppercase tracking-widest">Research Compliance Analyst</p>
+    <!-- ======================== QUOTE ======================== -->
+    <section class="py-20 lg:py-24 bg-gray-50/60 border-y border-gray-100/80 section-divide">
+        <div class="max-w-2xl mx-auto px-5 sm:px-8 text-center sr">
+            <div class="relative inline-block">
+                <span class="quote-mark" aria-hidden="true">"</span>
+                <blockquote class="font-display text-[1.35rem] md:text-[1.65rem] text-slate-800 leading-[1.55] relative pt-6">
+                    For the heart, I have an ECG. For the lungs, capnography.<br class="hidden md:inline"> But for the brain — I'm still guessing with a flashlight.
+                </blockquote>
+            </div>
+            <div class="mt-7">
+                <p class="font-semibold text-slate-900 text-sm tracking-tight">Capt. Curtis Ward</p>
+                <p class="text-[11px] text-gray-400 mt-1 tracking-wide">Fire & EMS Captain · 26 Years</p>
             </div>
         </div>
     </section>
 
-    <section id="problem" class="py-24 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4 tracking-tight">The "Brain Data Desert"</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">EMS has objective tools for the heart and lungs, but neurological triage still relies on a subjective flashlight.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-8 rounded-2xl bg-white border border-slate-100 shadow-sm">
-                    <h3 class="text-xl font-bold mb-4 text-slate-800">Heart: ECG</h3>
-                    <p class="text-sm text-gray-500">Objective, real-time electrical monitoring.</p>
-                    <div class="mt-4 text-green-600 font-bold text-xs">STANDARD OF CARE</div>
+    <!-- ======================== TRACTION ======================== -->
+    <section class="py-16 lg:py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-5 sm:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 sr">
+                <div class="text-center py-3">
+                    <p class="text-[1.35rem] font-semibold text-ink-900 tracking-tight mb-1.5">Active</p>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.18em] font-medium leading-tight">EMS Pilot<br>Program</p>
                 </div>
-                <div class="p-8 rounded-2xl bg-white border border-slate-100 shadow-sm">
-                    <h3 class="text-xl font-bold mb-4 text-slate-800">Lungs: Capno</h3>
-                    <p class="text-sm text-gray-500">Objective, real-time gas exchange data.</p>
-                    <div class="mt-4 text-green-600 font-bold text-xs">STANDARD OF CARE</div>
+                <div class="text-center py-3">
+                    <p class="text-[1.35rem] font-semibold text-ink-900 tracking-tight mb-1.5">Approved</p>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.18em] font-medium leading-tight">IRB<br>Status</p>
                 </div>
-                <div class="p-8 rounded-2xl bg-white border-2 border-red-500/20 shadow-xl relative">
-                    <div class="absolute -top-3 right-4 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded">THE GAP</div>
-                    <h3 class="text-xl font-bold mb-4 text-slate-800">Brain: Penlight</h3>
-                    <p class="text-sm text-gray-500 italic">Subjective, inconsistent, and slow.</p>
-                    <div class="mt-4 text-red-600 font-bold text-xs uppercase tracking-widest">The iRays Opportunity</div>
+                <div class="text-center py-3">
+                    <p class="text-[1.35rem] font-semibold text-ink-900 tracking-tight mb-1.5">Filed</p>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.18em] font-medium leading-tight">US<br>Patent</p>
+                </div>
+                <div class="text-center py-3">
+                    <p class="text-[1.35rem] font-semibold text-ink-900 tracking-tight mb-1.5">Defined</p>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.18em] font-medium leading-tight">FDA<br>Pathway</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="technology" class="py-24 bg-slate-900 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+    <!-- ======================== TEAM ======================== -->
+    <section id="team" class="py-24 lg:py-32 bg-gray-50/60 border-t border-gray-100/80 section-divide">
+        <div class="max-w-5xl mx-auto px-5 sm:px-8">
+            <div class="text-center mb-16 sr">
+                <h2 class="font-display text-[2rem] md:text-[2.5rem] text-slate-900 tracking-tight">Team</h2>
+            </div>
+
+            <!-- Leadership -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto mb-20">
+                <div class="sr sr-d1 card-elevated bg-white p-8 rounded-2xl border border-gray-100 shadow-sm text-center">
+                    <div class="w-[88px] h-[88px] mx-auto mb-5 relative">
+                        <div class="absolute inset-0 bg-signal-500 rounded-full blur-2xl opacity-[0.07]"></div>
+                        <img src="assets/img/ran.jpg" alt="Ran Yang, Ph.D." class="relative w-[88px] h-[88px] rounded-full object-cover border-[3px] border-white shadow-lg">
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-900 tracking-tight">Ran Yang, Ph.D.</h3>
+                    <p class="text-signal-600 text-[10px] font-semibold uppercase tracking-[0.15em] mt-1 mb-3">Founder & CEO</p>
+                    <p class="text-gray-400 text-xs leading-relaxed">Applied Physics · Optical Systems<br>William & Mary · 2nd-time founder</p>
+                </div>
+                <div class="sr sr-d2 card-elevated bg-white p-8 rounded-2xl border border-gray-100 shadow-sm text-center">
+                    <div class="w-[88px] h-[88px] mx-auto mb-5">
+                        <div class="w-[88px] h-[88px] bg-gray-100 rounded-full flex items-center justify-center text-gray-300 text-xl font-semibold border-[3px] border-white shadow-lg">CM</div>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-900 tracking-tight">Connor Martin</h3>
+                    <p class="text-signal-600 text-[10px] font-semibold uppercase tracking-[0.15em] mt-1 mb-3">Electrical Engineer</p>
+                    <p class="text-gray-400 text-xs leading-relaxed">PCB Design · Firmware<br>Medical-Grade Hardware</p>
+                </div>
+            </div>
+
+            <!-- Advisory -->
+            <div class="text-center mb-8 sr">
+                <h3 class="text-[13px] font-semibold text-slate-600 uppercase tracking-[0.18em]">Advisory Board</h3>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                <div class="sr sr-d1 bg-white px-5 py-4 rounded-xl border border-gray-100 hover:border-gray-200 transition-colors">
+                    <p class="text-sm font-semibold text-slate-800">Dr. Gunter Luepke</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Scientific Advisor · Applied Physics</p>
+                </div>
+                <div class="sr sr-d2 bg-white px-5 py-4 rounded-xl border border-gray-100 hover:border-gray-200 transition-colors">
+                    <p class="text-sm font-semibold text-slate-800">Capt. Curtis Ward, MS</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Operational Advisor · Hampton Fire & Rescue</p>
+                </div>
+                <div class="sr sr-d3 bg-white px-5 py-4 rounded-xl border border-gray-100 hover:border-gray-200 transition-colors">
+                    <p class="text-sm font-semibold text-slate-800">Dr. Adam Pflugrath, M.D.</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Clinical Advisor · Retina Surgery</p>
+                </div>
+                <div class="sr sr-d1 bg-white px-5 py-4 rounded-xl border border-gray-100 hover:border-gray-200 transition-colors">
+                    <p class="text-sm font-semibold text-slate-800">Elizabeth Pyle, MBA</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Commercialization · Med-Tech Market Entry</p>
+                </div>
+                <div class="sr sr-d2 bg-white px-5 py-4 rounded-xl border border-gray-100 hover:border-gray-200 transition-colors">
+                    <p class="text-sm font-semibold text-slate-800">Dr. Jason McDevitt, Ph.D.</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">IP & Licensing · William & Mary Tech Transfer</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== CTA ======================== -->
+    <section class="py-24 lg:py-32 cta-bg text-center relative overflow-hidden">
+        <!-- Atmospheric grain -->
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 512 512%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22 opacity=%221%22/%3E%3C/svg%3E')"></div>
+        <!-- Top edge glow -->
+        <div class="absolute top-0 left-[20%] right-[20%] h-px bg-gradient-to-r from-transparent via-signal-500/10 to-transparent"></div>
+
+        <div class="relative max-w-xl mx-auto px-5 sm:px-8 sr">
+            <h2 class="font-display text-[2rem] md:text-[2.75rem] text-white tracking-tight mb-5 leading-[1.15]">
+                Let's talk.
+            </h2>
+            <p class="text-slate-400 text-[15px] mb-10 leading-[1.75] font-light max-w-md mx-auto">
+                We're building relationships with clinical partners, government stakeholders, and strategic investors who share our mission.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3.5 justify-center">
+                <a href="/cdn-cgi/l/email-protection#fd8f9c93bd948f9c848e8b948e949293d39e9290c28e889f97989e89c0ad9c8f8993988f8e95948dddb4938c88948f84" class="btn-primary px-7 py-3.5 bg-white text-ink-900 rounded-lg font-medium text-sm shadow-lg shadow-black/10 inline-flex items-center justify-center gap-2">
+                    For Partners
+                    <svg class="w-3.5 h-3.5 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+                <a href="/cdn-cgi/l/email-protection#d7a5b6b997bea5b6aea4a1bea4beb8b9f9b4b8bae8a4a2b5bdb2b4a3ea9eb9a1b2a4a3b8a5f79eb9a6a2bea5ae" class="btn-ghost px-7 py-3.5 text-white border border-white/[0.12] rounded-lg font-medium text-sm">For Investors</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== FOOTER ======================== -->
+    <footer class="bg-ink-950 border-t border-white/[0.04] py-10">
+        <div class="max-w-6xl mx-auto px-5 sm:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
                 <div>
-                    <div class="inline-block px-3 py-1 bg-blue-900/50 text-blue-400 rounded-full text-xs font-bold tracking-wide mb-6 uppercase">Production Intent Engineering</div>
-                    <h2 class="text-4xl font-bold mb-6 tracking-tight">Custom Hardware for <br/><span class="text-blue-500">Critical Environments.</span></h2>
-                    <p class="text-slate-400 text-lg mb-8 leading-relaxed">
-                        Off-the-shelf cameras cannot capture the subtle dynamics of the pupillary light reflex. Our 4th-gen PCB features integrated dual-spectrum control for <10ms latency.
-                    </p>
-                    <ul class="space-y-4 text-slate-300">
-                        <li class="flex items-start"><span class="text-blue-500 mr-3">✔</span> <strong>Dual-Spectrum Imaging:</strong> Synchronized IR and Visible light.</li>
-                        <li class="flex items-start"><span class="text-blue-500 mr-3">✔</span> <strong>Edge AI Processing:</strong> On-device latency below 10ms.</li>
-                        <li class="flex items-start"><span class="text-blue-500 mr-3">✔</span> <strong>Ruggedized Build:</strong> Tested for EMS duty cycles.</li>
-                    </ul>
-                </div>
-                <div>
-                    <img src="assets/img/pcb-v4.jpg" alt="iRays Custom PCB V4" class="rounded-2xl shadow-2xl border border-slate-700">
-                    <p class="mt-4 text-center text-slate-500 text-xs font-mono italic">iRays Custom PCB V4 Assembly</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="order-2 lg:order-1">
-                    <img src="assets/img/v1-prototype.jpg" alt="iRays Bench Prototype" class="rounded-2xl shadow-2xl border border-slate-700 grayscale hover:grayscale-0 transition duration-500">
-                    <p class="mt-4 text-center text-slate-500 text-xs font-mono italic">Internal Bench Prototype V1</p>
-                </div>
-                <div class="order-1 lg:order-2">
-                    <h3 class="text-2xl font-bold mb-4">From Bench to Field.</h3>
-                    <p class="text-slate-400 leading-relaxed mb-6">
-                        We have moved beyond the "black box" phase. Our V1 bench prototype successfully demonstrated our proprietary <strong>Event Synchronized Video Topology</strong>, proving our ability to capture high-fidelity neuro-metrics in varied lighting conditions.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-24 bg-white border-b border-gray-100 text-center">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold mb-8 text-slate-900 tracking-tight">Patent-Pending Methodology</h2>
-            <img src="assets/img/topology.jpg" alt="Event Synchronized Video Topology" class="rounded-xl border border-gray-200 shadow-lg mb-8 mx-auto max-w-2xl">
-            <p class="text-gray-500 text-sm max-w-xl mx-auto">Our unique topology solves the frame-rate bottleneck inherent in standard mobile diagnostics, ensuring clinical-grade accuracy on portable hardware.</p>
-        </div>
-    </section>
-
-    <section id="team" class="py-24 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4">Leadership</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto mt-12">
-                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="w-32 h-32 mx-auto mb-6 relative">
-                            <div class="absolute inset-0 bg-blue-600 rounded-full blur-md opacity-20"></div>
-                            <img src="assets/img/ran.jpg" alt="Ran Yang, Ph.D." class="relative w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg">
+                    <div class="flex items-center gap-2 justify-center md:justify-start mb-2">
+                        <div class="w-6 h-6 rounded bg-white/[0.06] flex items-center justify-center">
+                            <span class="text-white/80 font-semibold text-[11px] leading-none">i</span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-900 font-bold">Ran Yang, Ph.D.</h3>
-                        <p class="text-blue-600 text-sm font-semibold mb-4 uppercase tracking-wider text-xs">Founder & CEO</p>
-                        <p class="text-gray-500 text-sm leading-relaxed">20 years in Applied Physics and Electronics. Former Lead Researcher at William & Mary. Expert in Edge AI & Optical Sensing.</p>
+                        <span class="font-medium text-sm text-white/80 tracking-tight">iRays<span class="text-signal-400">Vision</span></span>
                     </div>
-                    
-                    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="w-32 h-32 mx-auto mb-6 flex items-center justify-center">
-                            <div class="w-32 h-32 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 text-3xl font-bold border-4 border-white shadow-lg uppercase">CM</div>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 font-bold">Connor Martin</h3>
-                        <p class="text-blue-600 text-sm font-semibold mb-4 uppercase tracking-wider text-xs">Electrical Engineer</p>
-                        <p class="text-gray-500 text-sm leading-relaxed">Specializing in high-speed PCB design and firmware development for medical-grade optical sensors.</p>
-                    </div>
+                    <p class="text-[11px] text-slate-600">A William & Mary Venture · Williamsburg, VA</p>
+                    <p class="text-[11px] text-slate-700 mt-0.5">&copy; 2026 iRays Vision</p>
                 </div>
-            </div>
-
-            <div class="mt-24">
-                <div class="text-center mb-12">
-                    <h2 class="text-2xl font-bold text-slate-900">Advisory Board</h2>
-                    <p class="text-gray-500 mt-2 text-sm uppercase tracking-widest">Scientific & Commercial Guidance</p>
+                <div class="flex items-center gap-5">
+                    <a href="/cdn-cgi/l/email-protection#b5c7d4dbf5dcc7d4ccc6c3dcc6dcdadb9bd6dad8" class="text-[11px] text-slate-500 hover:text-white transition-colors uppercase tracking-[0.15em]">Contact</a>
+                    <!-- Replace # with your LinkedIn company page URL -->
+                    <a href="#" class="text-slate-600 hover:text-white transition-colors" aria-label="LinkedIn">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
                 </div>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-white/50 p-6 rounded-xl border border-gray-200">
-                        <h4 class="font-bold text-slate-900 text-sm">Dr. Gunter Luepke, Ph.D.</h4>
-                        <p class="text-blue-600 text-[10px] font-bold uppercase tracking-wider mb-2">Scientific Advisor</p>
-                        <p class="text-gray-500 text-xs">Professor of Applied Physics; 40 years in Optics research.</p>
-                    </div>
-
-                    <div class="bg-white/50 p-6 rounded-xl border border-gray-200">
-                        <h4 class="font-bold text-slate-900 text-sm">Capt. Curtis Ward, MS</h4>
-                        <p class="text-blue-600 text-[10px] font-bold uppercase tracking-wider mb-2">Operational Advisor</p>
-                        <p class="text-gray-500 text-xs">EMS Partner Liaison; Clinical lead for Hampton Fire & Rescue.</p>
-                    </div>
-                    
-                    <div class="bg-white/50 p-6 rounded-xl border border-gray-200">
-                        <h4 class="font-bold text-slate-900 text-sm">Dr. Adam Pflugrath, M.D.</h4>
-                        <p class="text-blue-600 text-[10px] font-bold uppercase tracking-wider mb-2">Clinical Advisor</p>
-                        <p class="text-gray-500 text-xs">Retina Surgeon; Clinical diagnostic expert.</p>
-                    </div>
-                    
-                    <div class="bg-white/50 p-6 rounded-xl border border-gray-200">
-                        <h4 class="font-bold text-slate-900 text-sm">Elizabeth Pyle, MBA</h4>
-                        <p class="text-blue-600 text-[10px] font-bold uppercase tracking-wider mb-2">Commercialization</p>
-                        <p class="text-gray-500 text-xs">Specialist in med-tech market entry and business scaling.</p>
-                    </div>
-                    
-                    <div class="bg-white/50 p-6 rounded-xl border border-gray-200">
-                        <h4 class="font-bold text-slate-900 text-sm">Dr. Jason McDevitt, Ph.D.</h4>
-                        <p class="text-blue-600 text-[10px] font-bold uppercase tracking-wider mb-2">IP & Licensing</p>
-                        <p class="text-gray-500 text-xs">Director of Technology Transfer at William & Mary.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-slate-900 text-slate-400 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs uppercase tracking-widest">
-            <p class="font-bold text-white mb-4">iRays Vision</p>
-            <p>© 2026 iRays | Built in Williamsburg, VA</p>
-            <div class="mt-6 flex justify-center gap-6">
-                <a href="mailto:ran@iraysvision.com" class="hover:text-white transition">Contact</a>
-                <a href="#technology" class="hover:text-white transition">Tech</a>
             </div>
         </div>
     </footer>
 
-</body>
-</html>
+    <!-- ======================== SCROLL REVEAL JS ======================== -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Intersection Observer for scroll-triggered reveals
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.u
