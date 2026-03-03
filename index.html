@@ -502,9 +502,29 @@
     </footer>
 
     <!-- ======================== SCROLL REVEAL ======================== -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         var observer = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    ob
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        document.querySelectorAll('.sr').forEach(function(el) {
+            observer.observe(el);
+        });
+
+        document.querySelectorAll('#mob a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('mob').classList.add('hidden');
+            });
+        });
+    </script>
+
+</body>
+</html>
