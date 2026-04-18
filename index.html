@@ -58,6 +58,10 @@
 
     <!-- ======================== HERO ======================== -->
     <header class="relative pt-28 pb-8 lg:pt-40 lg:pb-10 overflow-hidden hero-bg">
+
+        <!-- Subtle technical grid — masked to device side -->
+        <div class="hero-grid-overlay" aria-hidden="true"></div>
+
         <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
 
             <!-- Main hero grid -->
@@ -96,7 +100,28 @@
                             decoding="async"
                             class="relative rounded-2xl w-full max-w-[500px] shadow-2xl shadow-black/50 border border-white/[0.06] hover:scale-[1.015] transition-transform duration-700 ease-out"
                         >
-                        <!-- Glass info card — bottom right, tucked into corner -->
+
+                        <!-- Targeting overlay: corner brackets + scan sweep + ring + readout -->
+                        <div class="device-overlay" aria-hidden="true">
+                            <!-- SVG corner brackets -->
+                            <svg class="device-brackets" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polyline points="6,18 6,6 18,6"    fill="none" stroke="rgba(59,130,246,0.5)" stroke-width="0.6" stroke-linecap="square"/>
+                                <polyline points="82,6 94,6 94,18"  fill="none" stroke="rgba(59,130,246,0.5)" stroke-width="0.6" stroke-linecap="square"/>
+                                <polyline points="6,82 6,94 18,94"  fill="none" stroke="rgba(59,130,246,0.5)" stroke-width="0.6" stroke-linecap="square"/>
+                                <polyline points="82,94 94,94 94,82" fill="none" stroke="rgba(59,130,246,0.5)" stroke-width="0.6" stroke-linecap="square"/>
+                            </svg>
+                            <!-- Horizontal scan sweep -->
+                            <div class="device-scan-line"></div>
+                            <!-- Pulsing center ellipse -->
+                            <div class="device-ring"></div>
+                            <!-- Technical readout text -->
+                            <div class="device-readout">
+                                PLR · Scan Active<br>
+                                <span class="readout-blink">●</span> Sys: Nominal · v5.2.1
+                            </div>
+                        </div>
+
+                        <!-- Glass info card -->
                         <div class="absolute -bottom-6 -right-4 md:-bottom-5 md:-right-8 glass p-3.5 md:p-4 rounded-xl shadow-2xl hidden sm:block z-10">
                             <div class="flex items-center gap-2.5">
                                 <div class="w-1 h-8 bg-signal-500 rounded-full"></div>
@@ -111,24 +136,41 @@
                 </div>
             </div>
 
-            <!-- Status badges — frosted glass row at hero base -->
-            <div class="hr hr5 grid grid-cols-2 md:grid-cols-4 gap-3 mt-16 lg:mt-20 max-w-4xl mx-auto">
-                <div class="status-glass rounded-xl px-5 py-4 text-center">
-                    <p class="text-[1.1rem] font-semibold text-white tracking-tight">Active</p>
-                    <p class="text-[9px] text-slate-400 uppercase tracking-[0.2em] mt-1 font-medium">EMS Pilot Program</p>
+            <!-- System status bar + badge grid -->
+            <div class="hr hr5 mt-16 lg:mt-20 max-w-4xl mx-auto">
+
+                <!-- System nominal indicator -->
+                <div class="system-status-bar" aria-hidden="true">
+                    <span class="status-dot-glow"></span>
+                    <span>Systems Nominal</span>
+                    <span class="status-sep">·</span>
+                    <span>EMS Pilot: Active</span>
+                    <span class="status-sep">·</span>
+                    <span>IRB: Approved</span>
+                    <span class="status-sep">·</span>
+                    <span>Patent: Pending</span>
                 </div>
-                <div class="status-glass rounded-xl px-5 py-4 text-center">
-                    <p class="text-[1.1rem] font-semibold text-white tracking-tight">Approved</p>
-                    <p class="text-[9px] text-slate-400 uppercase tracking-[0.2em] mt-1 font-medium">IRB Status</p>
+
+                <!-- Status badges -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="status-glass rounded-xl px-5 py-4 text-center">
+                        <p class="text-[1.1rem] font-semibold text-white tracking-tight">Active</p>
+                        <p class="text-[9px] text-slate-400 uppercase tracking-[0.2em] mt-1 font-medium">EMS Pilot Program</p>
+                    </div>
+                    <div class="status-glass rounded-xl px-5 py-4 text-center">
+                        <p class="text-[1.1rem] font-semibold text-white tracking-tight">Approved</p>
+                        <p class="text-[9px] text-slate-400 uppercase tracking-[0.2em] mt-1 font-medium">IRB Status</p>
+                    </div>
+                    <div class="status-glass rounded-xl px-5 py-4 text-center">
+                        <p class="text-[1.1rem] font-semibold text-white tracking-tight">Pending</p>
+                        <p class="text-[9px] text-slate-400 uppercase tracking-[0.2em] mt-1 font-medium">US Patent</p>
+                    </div>
+                    <div class="status-glass rounded-xl px-5 py-4 text-center">
+                        <p class="text-[1.1rem] font-semibold text-white tracking-tight">Defined</p>
+                        <p class="text-[9px] text-slate-400 uppercase tracking-[0.2em] mt-1 font-medium">FDA Pathway</p>
+                    </div>
                 </div>
-                <div class="status-glass rounded-xl px-5 py-4 text-center">
-                    <p class="text-[1.1rem] font-semibold text-white tracking-tight">Pending</p>
-                    <p class="text-[9px] text-slate-400 uppercase tracking-[0.2em] mt-1 font-medium">US Patent</p>
-                </div>
-                <div class="status-glass rounded-xl px-5 py-4 text-center">
-                    <p class="text-[1.1rem] font-semibold text-white tracking-tight">Defined</p>
-                    <p class="text-[9px] text-slate-400 uppercase tracking-[0.2em] mt-1 font-medium">FDA Pathway</p>
-                </div>
+
             </div>
 
         </div>
@@ -211,6 +253,34 @@
                 <p class="text-[11px] text-slate-400 mt-1 tracking-wide">Fire &amp; EMS Captain · 26 Years</p>
             </div>
         </div>
+
+        <!-- Scrolling neural / PLR waveform at section base -->
+        <div class="waveform-container" aria-hidden="true">
+            <div class="waveform-track">
+                <!-- Waveform path represents a pupillary light reflex signal (rapid constriction, smooth re-dilation) -->
+                <svg class="waveform-svg" viewBox="0 0 800 60" preserveAspectRatio="none">
+                    <path class="waveform-path" d="
+                        M0,35
+                        L175,35
+                        C180,35 183,33 185,28 C187,23 188,16 190,11 C192,6 193,7 195,11 C197,15 198,24 200,31 C201,34 202,35 205,35
+                        L490,35
+                        C495,35 498,33 500,28 C502,23 503,16 505,11 C507,6 508,7 510,11 C512,15 513,24 515,31 C516,34 517,35 520,35
+                        L800,35
+                    "/>
+                </svg>
+                <!-- Duplicate for seamless loop -->
+                <svg class="waveform-svg" viewBox="0 0 800 60" preserveAspectRatio="none" aria-hidden="true">
+                    <path class="waveform-path" d="
+                        M0,35
+                        L175,35
+                        C180,35 183,33 185,28 C187,23 188,16 190,11 C192,6 193,7 195,11 C197,15 198,24 200,31 C201,34 202,35 205,35
+                        L490,35
+                        C495,35 498,33 500,28 C502,23 503,16 505,11 C507,6 508,7 510,11 C512,15 513,24 515,31 C516,34 517,35 520,35
+                        L800,35
+                    "/>
+                </svg>
+            </div>
+        </div>
     </section>
 
     <!-- ======================== TEAM ======================== -->
@@ -272,7 +342,16 @@
 
     <!-- ======================== CTA ======================== -->
     <section class="py-28 lg:py-36 bg-white text-center relative overflow-hidden border-t border-gray-100">
+        <!-- Background radial warmth -->
         <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 50% 50% at 50% 40%, rgba(59,130,246,0.03) 0%, transparent 70%);"></div>
+
+        <!-- Expanding radar rings -->
+        <div class="radar-rings" aria-hidden="true">
+            <div class="radar-ring"></div>
+            <div class="radar-ring" style="animation-delay: 1.5s;"></div>
+            <div class="radar-ring" style="animation-delay: 3s;"></div>
+        </div>
+
         <div class="relative max-w-xl mx-auto px-5 sm:px-8 sr">
             <h2 class="font-display text-[2.5rem] md:text-[3.5rem] text-slate-900 tracking-tight mb-6 leading-[1.1]">
                 Let's talk.
@@ -302,7 +381,7 @@
                         <span class="font-semibold text-base text-white/80 tracking-tight">iRays<span class="text-signal-400">Vision</span></span>
                     </div>
                     <p class="text-[13px] text-slate-400">A William &amp; Mary Venture · Williamsburg, VA</p>
-                    <p class="text-[12px] text-slate-500 mt-1">&copy; 2026 iRays Vision <a href="index_v1.html" class="text-slate-700 hover:text-slate-400 transition-colors ml-1">v1</a></p>
+                    <p class="text-[12px] text-slate-500 mt-1">&copy; 2026 iRays Vision <a href="index_v1.html" class="text-slate-700 hover:text-slate-400 transition-colors ml-1">v1</a> <a href="index_v2.html" class="text-slate-700 hover:text-slate-400 transition-colors ml-1">v2</a></p>
                 </div>
                 <div class="flex items-center gap-6">
                     <a href="mailto:ran@iraysvision.com" class="text-[12px] text-slate-400 hover:text-white transition-colors uppercase tracking-[0.15em] font-medium">Contact</a>

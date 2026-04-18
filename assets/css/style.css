@@ -133,12 +133,31 @@ body { font-family: 'Outfit', system-ui, sans-serif; overflow-x: hidden; }
 
 /* ===== CARDS ===== */
 .card-lift {
+    position: relative;
+    isolation: isolate;
     transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
 }
 .card-lift:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 40px -8px rgba(0,0,0,0.08);
+    box-shadow:
+        0 12px 40px -8px rgba(0,0,0,0.08),
+        0 0 0 1px rgba(59,130,246,0.1),
+        0 0 24px -6px rgba(59,130,246,0.08);
 }
+/* Subtle top-edge blue blush on hover */
+.card-lift::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(59,130,246,0.04), transparent);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+.card-lift:hover::before { opacity: 1; }
 
 /* ===== QUOTE ===== */
 .quote-mark {
@@ -183,6 +202,222 @@ body { font-family: 'Outfit', system-ui, sans-serif; overflow-x: hidden; }
 section[id] { scroll-margin-top: 80px; }
 html { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
 
+/* ================================================================
+   ADVANCED VISUAL EFFECTS
+   ================================================================ */
+
+/* ===== REDUCED MOTION — disable decorative animations only ===== */
+@media (prefers-reduced-motion: reduce) {
+    .device-scan-line,
+    .device-ring,
+    .waveform-track,
+    .radar-ring,
+    .cursor-glow,
+    .status-dot-glow,
+    .readout-blink {
+        animation: none !important;
+    }
+}
+
+/* ===== CURSOR AMBIENT GLOW ===== */
+.cursor-glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    /* positioned via JS: left/top set to cursor coords */
+    transform: translate(-50%, -50%);
+    will-change: left, top;
+}
+
+/* ===== HERO TECH GRID OVERLAY ===== */
+.hero-grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+        linear-gradient(rgba(59,130,246,0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.028) 1px, transparent 1px);
+    background-size: 64px 64px;
+    /* mask to the device side of the hero */
+    -webkit-mask-image: radial-gradient(ellipse 65% 85% at 72% 45%, black 0%, transparent 72%);
+    mask-image: radial-gradient(ellipse 65% 85% at 72% 45%, black 0%, transparent 72%);
+}
+
+/* ===== DEVICE TARGETING OVERLAY ===== */
+.device-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 8;
+    border-radius: 1rem;  /* matches rounded-2xl */
+    overflow: hidden;
+}
+
+/* Corner bracket SVG fills the overlay */
+.device-brackets {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Horizontal scan sweep */
+.device-scan-line {
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(59,130,246,0.0) 8%,
+        rgba(59,130,246,0.55) 50%,
+        rgba(59,130,246,0.0) 92%,
+        transparent 100%
+    );
+    top: 0;
+    animation: scan-sweep 7s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    will-change: top;
+}
+@keyframes scan-sweep {
+    0%   { top: -1px;            opacity: 0;   }
+    6%   {                        opacity: 1;   }
+    94%  {                        opacity: 0.4; }
+    100% { top: calc(100% + 1px); opacity: 0;   }
+}
+
+/* Subtle pulsing ellipse inside device image */
+.device-ring {
+    position: absolute;
+    inset: 12%;
+    border-radius: 50%;
+    border: 1px solid rgba(59,130,246,0.07);
+    animation: ring-pulse 4.5s ease-in-out infinite;
+}
+@keyframes ring-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1);    }
+    50%       { opacity: 0.1; transform: scale(1.03); }
+}
+
+/* Monospace technical readout — bottom-left corner of device */
+.device-readout {
+    position: absolute;
+    bottom: 14px;
+    left: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 7.5px;
+    letter-spacing: 0.13em;
+    line-height: 1.75;
+    color: rgba(96,165,250,0.4);
+    pointer-events: none;
+    z-index: 9;
+    text-transform: uppercase;
+}
+
+.readout-blink {
+    color: #34d399;
+    animation: readout-blink 1.3s step-end infinite;
+}
+@keyframes readout-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+/* ===== SYSTEM STATUS BAR (above hero badges) ===== */
+.system-status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(96,165,250,0.28);
+    flex-wrap: wrap;
+    row-gap: 4px;
+}
+
+.status-dot-glow {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #34d399;
+    flex-shrink: 0;
+    animation: status-glow 2.4s ease-in-out infinite;
+}
+@keyframes status-glow {
+    0%, 100% { box-shadow: 0 0 4px 1px rgba(52,211,153,0.7);                           }
+    50%       { box-shadow: 0 0 10px 3px rgba(52,211,153,0.4), 0 0 22px 6px rgba(52,211,153,0.12); }
+}
+
+.status-sep { opacity: 0.2; }
+
+/* ===== NEURAL WAVEFORM (PLR signal, quote section) ===== */
+.waveform-container {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    height: 60px;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0.45;
+}
+
+/* Two SVGs side-by-side; animate left by 50% for seamless loop */
+.waveform-track {
+    display: flex;
+    width: 200%;
+    height: 100%;
+    animation: waveform-scroll 14s linear infinite;
+    will-change: transform;
+}
+@keyframes waveform-scroll {
+    from { transform: translateX(0);    }
+    to   { transform: translateX(-50%); }
+}
+
+.waveform-svg {
+    width: 50%;
+    height: 100%;
+    flex-shrink: 0;
+    display: block;
+}
+
+.waveform-path {
+    fill: none;
+    stroke: rgba(96,165,250,0.38);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+}
+
+/* ===== RADAR RINGS (CTA section) ===== */
+.radar-rings {
+    position: absolute;
+    left: 50%; top: 45%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.radar-ring {
+    position: absolute;
+    width: 520px; height: 520px;
+    margin-left: -260px; margin-top: -260px;
+    border-radius: 50%;
+    border: 1px solid rgba(59,130,246,0.055);
+    animation: radar-expand 4.5s ease-out infinite;
+}
+@keyframes radar-expand {
+    0%   { transform: scale(0.15); opacity: 0.6; }
+    100% { transform: scale(1.5);  opacity: 0;   }
+}
+
 /* ===== PASSWORD GATE ===== */
 #pw-gate {
     position: fixed; inset: 0; z-index: 9999;
@@ -210,6 +445,7 @@ html { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
     letter-spacing: 0.18em;
     color: rgba(255,255,255,0.25);
     margin-bottom: 2rem;
+    font-family: 'Courier New', Courier, monospace;
 }
 #pw-gate input {
     width: 100%;
@@ -247,5 +483,7 @@ html { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
     margin-top: 0.625rem;
     opacity: 0;
     transition: opacity 0.2s ease;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.08em;
 }
 #pw-gate .gate-err.visible { opacity: 1; }

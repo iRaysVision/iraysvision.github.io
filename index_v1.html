@@ -14,9 +14,92 @@
         .delay-200 { animation-delay: 0.2s; }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
         .hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+
+        /* ===== PASSWORD GATE ===== */
+        #pw-gate {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #060a14;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.4s ease;
+        }
+        #pw-gate .gate-box {
+            text-align: center;
+            padding: 2.5rem;
+            width: min(360px, 90vw);
+        }
+        #pw-gate .gate-logo {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.35rem;
+        }
+        #pw-gate .gate-logo span { color: #60a5fa; }
+        #pw-gate .gate-label {
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: rgba(255,255,255,0.25);
+            margin-bottom: 2rem;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #pw-gate input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.875rem;
+            text-align: center;
+            letter-spacing: 0.1em;
+            outline: none;
+            transition: border-color 0.2s ease;
+            margin-bottom: 0.75rem;
+            box-sizing: border-box;
+        }
+        #pw-gate input:focus { border-color: rgba(59,130,246,0.5); }
+        #pw-gate button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            box-sizing: border-box;
+        }
+        #pw-gate button:hover { background: #1d4ed8; }
+        #pw-gate .gate-err {
+            font-size: 0.75rem;
+            color: #f87171;
+            margin-top: 0.625rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            font-family: 'Courier New', Courier, monospace;
+            letter-spacing: 0.08em;
+        }
+        #pw-gate .gate-err.visible { opacity: 1; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
+
+    <!-- ======================== PASSWORD GATE ======================== -->
+    <div id="pw-gate">
+        <div class="gate-box">
+            <div class="gate-logo">iRays<span>Vision</span></div>
+            <p class="gate-label">V1 Archive · Restricted Access</p>
+            <input type="password" id="pw-input" placeholder="Enter access code" autocomplete="off" autofocus>
+            <button onclick="window._checkPw()">Enter</button>
+            <p id="pw-err" class="gate-err">Access denied — incorrect code</p>
+        </div>
+    </div>
 
     <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -262,5 +345,6 @@
         </div>
     </footer>
 
+    <script src="assets/js/gate.js"></script>
 </body>
 </html>

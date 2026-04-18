@@ -2,7 +2,10 @@
     var gate = document.getElementById('pw-gate');
     if (!gate) return;
 
-    if (sessionStorage.getItem('v2_unlocked') === '1') {
+    // Derive a per-page session key from the filename so v1 and v2 are independent.
+    var pageKey = 'gate_' + (location.pathname.split('/').pop() || 'index');
+
+    if (sessionStorage.getItem(pageKey) === '1') {
         gate.remove();
         return;
     }
@@ -10,7 +13,7 @@
     document.body.style.overflow = 'hidden';
 
     function unlock() {
-        sessionStorage.setItem('v2_unlocked', '1');
+        sessionStorage.setItem(pageKey, '1');
         gate.style.opacity = '0';
         setTimeout(function () {
             gate.remove();
@@ -20,7 +23,7 @@
 
     window._checkPw = function () {
         var input = document.getElementById('pw-input');
-        var err = document.getElementById('pw-err');
+        var err   = document.getElementById('pw-err');
         if (input.value === 'wuwei') {
             unlock();
         } else {
