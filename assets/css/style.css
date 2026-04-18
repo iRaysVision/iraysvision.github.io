@@ -1,1 +1,251 @@
-/* Custom styles for iRays Vision */
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: 'Outfit', system-ui, sans-serif; overflow-x: hidden; }
+
+/* ===== SCROLL REVEALS ===== */
+.sr { opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1); }
+.sr.visible { opacity: 1; transform: translateY(0); }
+.sr-d1 { transition-delay: 0.07s; }
+.sr-d2 { transition-delay: 0.14s; }
+.sr-d3 { transition-delay: 0.22s; }
+
+/* Hero entrance */
+.hr { opacity: 0; transform: translateY(22px); animation: hin 0.75s cubic-bezier(0.22,1,0.36,1) forwards; }
+.hr1 { animation-delay: 0.04s; }
+.hr2 { animation-delay: 0.12s; }
+.hr3 { animation-delay: 0.22s; }
+.hr4 { animation-delay: 0.32s; }
+.hr5 { animation-delay: 0.42s; }
+@keyframes hin { to { opacity: 1; transform: translateY(0); } }
+
+/* ===== HERO ===== */
+.hero-bg {
+    background:
+        radial-gradient(ellipse 45% 40% at 68% 42%, rgba(59,130,246,0.055) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 65% at 40% 50%, #111933 0%, #060a14 100%);
+}
+.hero-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+}
+.hero-bg::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 8%; right: 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59,130,246,0.12), transparent);
+}
+
+/* ===== DEVICE STAGING ===== */
+.device-stage { position: relative; z-index: 1; }
+.device-stage::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 140%; height: 140%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: -1;
+}
+.device-stage::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: 12%; right: 12%;
+    height: 40px;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.3) 0%, transparent 70%);
+    filter: blur(10px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ===== GLASS CARD ===== */
+.glass {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(16px) saturate(1.1);
+    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ===== STATUS GLASS CARDS ===== */
+.status-glass {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(20px) saturate(1.15);
+    -webkit-backdrop-filter: blur(20px) saturate(1.15);
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: all 0.35s ease;
+}
+.status-glass:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.12);
+}
+
+/* ===== NAV ===== */
+.nav-glass {
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+}
+.nav-link { position: relative; }
+.nav-link::after {
+    content: ''; position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 1.5px;
+    background: #2563eb;
+    transition: width 0.35s cubic-bezier(0.22,1,0.36,1);
+}
+.nav-link:hover::after { width: 100%; }
+
+/* ===== TRUST LOGOS ===== */
+.trust-bar-logo {
+    filter: grayscale(100%) brightness(0) opacity(0.35);
+    transition: all 0.4s ease;
+}
+.trust-bar-logo:hover {
+    filter: grayscale(0%) brightness(1) opacity(0.85);
+}
+.logo-wm       { height: 52px; width: auto; }
+.logo-hampton  { height: 56px; width: auto; }
+.logo-nih      { height: 40px; width: auto; }
+@media (min-width: 768px) {
+    .logo-wm      { height: 64px; }
+    .logo-hampton { height: 68px; }
+    .logo-nih     { height: 48px; }
+}
+
+/* ===== DOT GRID TEXTURE ===== */
+.dot-grid {
+    background-image: radial-gradient(circle, #d1d5db 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+}
+
+/* ===== SECTION DIVIDER ===== */
+.section-divide { position: relative; }
+.section-divide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 56px; height: 1px;
+    background: linear-gradient(90deg, transparent, #d1d5db, transparent);
+}
+
+/* ===== CARDS ===== */
+.card-lift {
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
+}
+.card-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px -8px rgba(0,0,0,0.08);
+}
+
+/* ===== QUOTE ===== */
+.quote-mark {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 7rem;
+    line-height: 1;
+    color: rgba(59,130,246,0.07);
+    position: absolute;
+    top: -20px; left: 50%;
+    transform: translateX(-50%);
+    user-select: none;
+    pointer-events: none;
+}
+
+/* ===== CTA ===== */
+.cta-bg {
+    background:
+        radial-gradient(ellipse 40% 60% at 50% 100%, rgba(59,130,246,0.05) 0%, transparent 70%),
+        #060a14;
+}
+
+/* ===== BUTTONS ===== */
+.btn-solid {
+    position: relative; overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px -4px rgba(0,0,0,0.15);
+}
+.btn-solid:hover {
+    box-shadow: 0 8px 30px -4px rgba(59,130,246,0.2);
+    transform: translateY(-1px);
+}
+.btn-ghost {
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+.btn-ghost:hover {
+    opacity: 1;
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.2);
+}
+
+section[id] { scroll-margin-top: 80px; }
+html { scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
+
+/* ===== PASSWORD GATE ===== */
+#pw-gate {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #060a14;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.4s ease;
+}
+#pw-gate .gate-box {
+    text-align: center;
+    padding: 2.5rem;
+    width: min(360px, 90vw);
+}
+#pw-gate .gate-logo {
+    font-family: 'Outfit', system-ui, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+}
+#pw-gate .gate-logo span { color: #60a5fa; }
+#pw-gate .gate-label {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 2rem;
+}
+#pw-gate input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.875rem;
+    text-align: center;
+    letter-spacing: 0.1em;
+    outline: none;
+    transition: border-color 0.2s ease;
+    margin-bottom: 0.75rem;
+}
+#pw-gate input:focus { border-color: rgba(59,130,246,0.5); }
+#pw-gate button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+#pw-gate button:hover { background: #1d4ed8; }
+#pw-gate .gate-err {
+    font-size: 0.75rem;
+    color: #f87171;
+    margin-top: 0.625rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+#pw-gate .gate-err.visible { opacity: 1; }
